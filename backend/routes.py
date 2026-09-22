@@ -75,11 +75,23 @@ def create_picture():
 
 @app.route("/picture/<int:id>", methods=["PUT"])
 def update_picture(id):
-    pass
+    picture = request.get_json()
+
+    for index, existing_picture in enumerate(data):
+        if existing_picture["id"] == id:
+            data[index] = picture
+            return jsonify(picture), 200
+
+    return {"message": "Picture not found"}, 404
 
 ######################################################################
 # DELETE A PICTURE
 ######################################################################
 @app.route("/picture/<int:id>", methods=["DELETE"])
 def delete_picture(id):
-    pass
+    for index, picture in enumerate(data):
+        if picture["id"] == id:
+            data.pop(index)
+            return "", 204
+
+    return {"message": "Picture not found"}, 404
